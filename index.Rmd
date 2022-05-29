@@ -1,8 +1,8 @@
 ---
-author: "未命名 B01201001 一般系"
+author: "黃柏勳 310708003 交大科管"
 title: "HW 4: List, Loop, and Data frame"
 date: | 
-  | 2021-03-18
+  | 2022-05-29
   |
   | [Rmd Source (for TAs)](./index.Rmd){download='`r basename(getwd())`.Rmd'}
 output:
@@ -42,6 +42,8 @@ df
 
 ```{r}
 # Write your code here
+df[df$supp == "VC", -3]
+#df[df$supp == "VC", c("len", "supp")]
 
 # should print out:
 #> # A tibble: 30 x 2
@@ -67,6 +69,8 @@ df
 
 ```{r}
 # Write your code here
+df[(df$supp == "VC") & (df$len < 25), ]
+#後面的逗號要記得阿，有括號比較清楚
 
 # should print out:
 #> # A tibble: 24 x 3
@@ -92,6 +96,7 @@ df
 
 ```{r}
 # Write your code here
+df[(df$len + 15*df$dose) > 40, ]
 
 # should print out:
 #> # A tibble: 24 x 3
@@ -148,8 +153,11 @@ member <- list(
 
 n_years_later <- function(member_data, years) {
   # Write your code here
+  for (i in 1:length(member)){
+    member_data[[i]][[2]] <- member_data[[i]][[2]] + years
+  }
+  return(member_data)
 }
-
 
 ##### Do Not modify the code below #####
 member[[5]] <- list(name = "Obama", age = 59)
@@ -171,6 +179,8 @@ for (y in -1:1) {
    
 ```{r}
 # Write your code here
+library(readr)
+cute_cute <- read_csv("C:\\Users\\huang\\Rlads\\hw4\\week3Rclass.csv")
 
 # Do not modify the code below
 cute_cute
@@ -210,7 +220,13 @@ Q_Q = data.frame(
 ####### Do Not modify the code above #########
 
 # Write your code here
-
+#Q_Q[Q_Q$GPA > 4.3] <- NA (我原本寫這樣，結果掛掉了)
+Q_Q$GPA[Q_Q$GPA > 4.3] <- NA
+Q_Q$gender <- as.character(Q_Q$gender) #助教解
+Q_Q$gender[(Q_Q$gender != "M") & (Q_Q$gender != "F")] <- 0
+Q_Q$gender[Q_Q$gender == "M"] <- 1
+Q_Q$gender[Q_Q$gender == "F"] <- 2
+Q_Q$gender <- as.integer(Q_Q$gender) #助教解
 
 # Do Not modify the code below
 Q_Q
@@ -232,7 +248,19 @@ Q_Q
   
 ```{r}
 # Write your code here
+cute_cute$favorite_word <- ""
+for (i in 1:length(cute_cute$q_self)){
+  if (cute_cute$q_self[i] >= 70){
+    cute_cute$favorite_word[i] <- "根本可愛動物區"
+  } else {
+    cute_cute$favorite_word[i] <- "一代一代"
+  }
+}
+#助教解如下
+#cute_cute$favorite_word <- ifelse(cute_cute$q_self >= 70, "根本可愛動物區", "一代一代")
+                                  
 
+  
 # Do not modify the code below
 cute_cute
 # Should print out
